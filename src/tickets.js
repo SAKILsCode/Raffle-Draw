@@ -134,26 +134,26 @@ class TicketCollection {
   }
 
 
-  // // INCOMPLETE - Weird modification of db.json file.
-  // /**
-  //  * Bulk Delete by username
-  //  * @param {string} username
-  //  * @returns {boolean}
-  //  */
-  // bulkDelete(username) {
-  //   const userTickets = this.findByUsername(username);
-  //   if (userTickets.length <= 0) return false;
+  // INCOMPLETE - Weird modification of db.json file.
+  /**
+   * Bulk Delete by username
+   * @param {string} username
+   * @returns {boolean}
+   */
+  bulkDelete(username) {
+    const userTickets = this.findByUsername(username);
+    if (userTickets.length <= 0) return false;
 
-  //   const deletedResult = userTickets.map(
-  //     /**
-  //      * @param {Ticket} ticket
-  //      * @returns {boolean}
-  //      */
-  //     (ticket) => this.deleteById(ticket.id)
-  //   );
-  //   return deletedResult.every((res) => res === true);
-  // }
-  
+    const deletedResult = userTickets.map(
+      /**
+       * @param {Ticket} ticket
+       * @returns {boolean}
+       */
+      (ticket) => this.deleteById(ticket.id)
+    );
+    return deletedResult.every((res) => res === true);
+  }
+
 
 
   /**
