@@ -50,7 +50,7 @@ exports.updateById = (req, res) => {
 
 exports.updateByUsername = (req, res) => {
   const username = req.params.username;
-  const tickets = ticketCollection.updateByUsername(username, req.body);
+  const tickets = ticketCollection.bulkUpdate(username, req.body);
   res.status(200).json({ item: tickets, total: tickets.length });
 };
 
@@ -81,4 +81,4 @@ exports.drawWinners = (req, res) => {
   const winnerCount = req.query.wc ?? 1;
   const winners = ticketCollection.draw(winnerCount);
   res.status(200).json(winners);
-}
+};

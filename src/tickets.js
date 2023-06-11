@@ -5,9 +5,13 @@ const tickets = Symbol('tickets');
 
 class TicketCollection {
   constructor() {
+    // using IIFE to use async await
     (async function () {
+      // instead of "tickets = []" to avoid suggestion to avoid accessing from outside
       this[tickets] = await readFile();
-    }.call(this));
+
+      // call(this) to bind it with constructor's "this" not IIFE's "this"
+    }).call(this);
   }
 
   /**
@@ -133,28 +137,39 @@ class TicketCollection {
     return true;
   }
 
+  // * INCOMPLETE - Weird modification of db.json file.
+  // ? 1st approach
+  // bulkDelete(username) {
+  //   const userTickets = this.findByUsername(username);
+  //   if (userTickets.length <= 0) return false;
 
-  // INCOMPLETE - Weird modification of db.json file.
-  /**
-   * Bulk Delete by username
-   * @param {string} username
-   * @returns {boolean}
-   */
+  //   const deletedResult = userTickets.map(
+  //     (ticket) => this.deleteById(ticket.id)
+  //   );
+
+  //   writeFile(this[tickets]);
+  //   return deletedResult.every((res) => res === true);
+  // }
+
+  // * Alternative 2nd approach
   bulkDelete(username) {
     const userTickets = this.findByUsername(username);
     if (userTickets.length <= 0) return false;
 
-    const deletedResult = userTickets.map(
+    const result = this[tickets].filter(
       /**
        * @param {Ticket} ticket
        * @returns {boolean}
        */
-      (ticket) => this.deleteById(ticket.id)
+      (ticket) => ticket.username !== username
     );
-    return deletedResult.every((res) => res === true);
+
+    writeFile(result);
+
+    const deleteItemLength = userTickets.length;
+    const lengthDiff = this[tickets].length - result.length;
+    return deleteItemLength === lengthDiff;
   }
-
-
 
   /**
    * Raffle draw and find winners
